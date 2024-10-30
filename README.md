@@ -16,3 +16,13 @@ https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-inst
 ```bash
 brew install argoproj/tap/kubectl-argo-rollouts
 ```
+
+## Dashboard
+
+Run:
+
+```
+kubectl argo rollouts dashboard
+```
+
+See: http://127.0.0.1:3100
