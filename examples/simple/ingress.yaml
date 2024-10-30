@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rollouts-simple-example
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - rollouts-simple-example.k8s.sikademo.com
+    secretName: rollouts-simple-example.k8s.sikademo.com-tls
+  rules:
+  - host: rollouts-simple-example.k8s.sikademo.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: rollouts-simple-example
+              port:
+                number: 80
