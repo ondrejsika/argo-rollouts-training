@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traffic-routing-example-canary
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: traffic-routing-example
+    # This selector will be updated with the pod-template-hash of the canary ReplicaSet. e.g.:
+    # rollouts-pod-template-hash: 7bf84f9696

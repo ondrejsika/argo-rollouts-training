@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traffic-routing-example-stable
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - traffic-routing-example.k8s.sikademo.com
+    secretName: traffic-routing-example.k8s.sikademo.com-tls
+  rules:
+  - host: traffic-routing-example.k8s.sikademo.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field
+            name: traffic-routing-example-stable
+            port:
+              number: 80

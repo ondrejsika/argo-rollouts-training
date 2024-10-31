@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: traffic-routing-example
+spec:
+  replicas: 1
+  strategy:
+    canary:
+      canaryService: traffic-routing-example-canary
+      stableService: traffic-routing-example-stable
+      trafficRouting:
+        nginx:
+          stableIngress: traffic-routing-example-stable
+      steps:
+      - setWeight: 5
+      - pause: {}
+      - setWeight: 50
+      - pause: {}
+
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: traffic-routing-example
+  template:
+    metadata:
+      labels:
+        app: traffic-routing-example
+    spec:
+      containers:
+      - name: traffic-routing-example
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
